@@ -145,7 +145,7 @@ function getGearboxFrequencyMarkers(): Array<{ freq: number; label: string; colo
   ];
 }
 
-export default function MachineTypeDiagnostics({
+export default function MachineTypeDiagnosticsV2({
   machineId,
   faultScores,
 }: MachineTypeDiagnosticsProps) {
@@ -494,4 +494,3 @@ export default function MachineTypeDiagnostics({
     </div>
   );
 }
-
