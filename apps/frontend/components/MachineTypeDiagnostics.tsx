@@ -145,7 +145,7 @@ function getGearboxFrequencyMarkers(): Array<{ freq: number; label: string; colo
   ];
 }
 
-export default function MachineTypeDiagnosticsV2({
+export default function MachineTypeDiagnosticsV2V2({
   machineId,
   faultScores,
 }: MachineTypeDiagnosticsProps) {
@@ -382,7 +382,7 @@ export default function MachineTypeDiagnosticsV2({
               <XAxis
                 dataKey="freq"
                 stroke="#9CA3AF"
-                tickFormatter={(v) => `${Math.round(v)} Hz`}
+                tickFormatter={(v: number) => `${Math.round(v)} Hz`}
                 domain={[0, 500]}
               />
               <YAxis stroke="#9CA3AF" />
@@ -392,7 +392,7 @@ export default function MachineTypeDiagnosticsV2({
                   borderColor: "#374151",
                   color: "#F9FAFB",
                 }}
-                labelFormatter={(v) => `${Math.round(v)} Hz`}
+                labelFormatter={(v: number) => `${Math.round(v)} Hz`}
               />
               <Line
                 type="monotone"

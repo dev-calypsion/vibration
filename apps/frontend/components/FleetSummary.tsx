@@ -187,7 +187,7 @@ export default function FleetSummary({ machines, machineData }: FleetSummaryProp
                     borderColor: "#374151",
                     color: "#F9FAFB",
                   }}
-                  formatter={(value: number) => [`${value.toFixed(0)}%`, "Health"]}
+                  formatter={(value: any) => [`${Number(value).toFixed(0)}%`, "Health"]}
                 />
                 <Bar
                   dataKey="healthScore"
