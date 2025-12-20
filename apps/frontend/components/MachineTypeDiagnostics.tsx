@@ -219,7 +219,6 @@ export default function MachineTypeDiagnostics({
   }
 
   const isMotor = machineType === "motor";
-  const faults = isMotor ? motorFaults : gearboxFaults;
 
   return (
     <div className="bg-gray-800 rounded-lg border border-gray-700 p-6 space-y-6">
@@ -347,11 +346,11 @@ export default function MachineTypeDiagnostics({
             <div className="flex-1 h-2 bg-gray-700 rounded-full overflow-hidden">
               <div
                 className="h-full bg-red-500 transition-all"
-                style={{ width: `${faults.bearing * 100}%` }}
+                style={{ width: `${faultScores.bearing * 100}%` }}
               />
             </div>
             <span className="text-xs font-mono text-white w-12 text-right">
-              {(faults.bearing * 100).toFixed(0)}%
+              {(faultScores.bearing * 100).toFixed(0)}%
             </span>
           </div>
         </div>
@@ -361,11 +360,11 @@ export default function MachineTypeDiagnostics({
             <div className="flex-1 h-2 bg-gray-700 rounded-full overflow-hidden">
               <div
                 className="h-full bg-blue-500 transition-all"
-                style={{ width: `${faults.misalignment * 100}%` }}
+                style={{ width: `${faultScores.misalignment * 100}%` }}
               />
             </div>
             <span className="text-xs font-mono text-white w-12 text-right">
-              {(faults.misalignment * 100).toFixed(0)}%
+              {(faultScores.misalignment * 100).toFixed(0)}%
             </span>
           </div>
         </div>
