@@ -257,11 +257,11 @@ export default function MachineTypeDiagnostics({
                 <div className="flex-1 h-2 bg-gray-700 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-yellow-500 transition-all"
-                    style={{ width: `${faults.rotorBar * 100}%` }}
+                    style={{ width: `${motorFaults.rotorBar * 100}%` }}
                   />
                 </div>
                 <span className="text-xs font-mono text-white w-12 text-right">
-                  {(faults.rotorBar * 100).toFixed(0)}%
+                  {(motorFaults.rotorBar * 100).toFixed(0)}%
                 </span>
               </div>
             </div>
@@ -271,11 +271,11 @@ export default function MachineTypeDiagnostics({
                 <div className="flex-1 h-2 bg-gray-700 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-orange-500 transition-all"
-                    style={{ width: `${faults.airGapEccentricity * 100}%` }}
+                    style={{ width: `${motorFaults.airGapEccentricity * 100}%` }}
                   />
                 </div>
                 <span className="text-xs font-mono text-white w-12 text-right">
-                  {(faults.airGapEccentricity * 100).toFixed(0)}%
+                  {(motorFaults.airGapEccentricity * 100).toFixed(0)}%
                 </span>
               </div>
             </div>
@@ -285,11 +285,11 @@ export default function MachineTypeDiagnostics({
                 <div className="flex-1 h-2 bg-gray-700 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-red-500 transition-all"
-                    style={{ width: `${faults.statorIssue * 100}%` }}
+                    style={{ width: `${motorFaults.statorIssue * 100}%` }}
                   />
                 </div>
                 <span className="text-xs font-mono text-white w-12 text-right">
-                  {(faults.statorIssue * 100).toFixed(0)}%
+                  {(motorFaults.statorIssue * 100).toFixed(0)}%
                 </span>
               </div>
             </div>
@@ -302,11 +302,11 @@ export default function MachineTypeDiagnostics({
                 <div className="flex-1 h-2 bg-gray-700 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-green-500 transition-all"
-                    style={{ width: `${faults.gearMesh * 100}%` }}
+                    style={{ width: `${gearboxFaults.gearMesh * 100}%` }}
                   />
                 </div>
                 <span className="text-xs font-mono text-white w-12 text-right">
-                  {(faults.gearMesh * 100).toFixed(0)}%
+                  {(gearboxFaults.gearMesh * 100).toFixed(0)}%
                 </span>
               </div>
             </div>
@@ -316,11 +316,11 @@ export default function MachineTypeDiagnostics({
                 <div className="flex-1 h-2 bg-gray-700 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-yellow-500 transition-all"
-                    style={{ width: `${faults.gearTooth * 100}%` }}
+                    style={{ width: `${gearboxFaults.gearTooth * 100}%` }}
                   />
                 </div>
                 <span className="text-xs font-mono text-white w-12 text-right">
-                  {(faults.gearTooth * 100).toFixed(0)}%
+                  {(gearboxFaults.gearTooth * 100).toFixed(0)}%
                 </span>
               </div>
             </div>
@@ -330,11 +330,11 @@ export default function MachineTypeDiagnostics({
                 <div className="flex-1 h-2 bg-gray-700 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-purple-500 transition-all"
-                    style={{ width: `${faults.huntingTooth * 100}%` }}
+                    style={{ width: `${gearboxFaults.huntingTooth * 100}%` }}
                   />
                 </div>
                 <span className="text-xs font-mono text-white w-12 text-right">
-                  {(faults.huntingTooth * 100).toFixed(0)}%
+                  {(gearboxFaults.huntingTooth * 100).toFixed(0)}%
                 </span>
               </div>
             </div>
@@ -442,49 +442,49 @@ export default function MachineTypeDiagnostics({
             <h5 className="text-sm font-semibold text-white mb-2">Diagnostic Insights</h5>
             {isMotor ? (
               <ul className="text-xs text-gray-300 space-y-1 list-disc list-inside">
-                {faults.rotorBar > 0.5 && (
+                {motorFaults.rotorBar > 0.5 && (
                   <li>
                     Elevated rotor bar fault indicators detected. Check for broken rotor bars or
                     end-ring issues.
                   </li>
                 )}
-                {faults.airGapEccentricity > 0.5 && (
+                {motorFaults.airGapEccentricity > 0.5 && (
                   <li>
                     Air gap eccentricity present. Verify bearing condition and stator alignment.
                   </li>
                 )}
-                {faults.statorIssue > 0.5 && (
+                {motorFaults.statorIssue > 0.5 && (
                   <li>
                     Line frequency harmonics suggest potential stator winding or core issues.
                   </li>
                 )}
-                {faults.rotorBar < 0.3 &&
-                  faults.airGapEccentricity < 0.3 &&
-                  faults.statorIssue < 0.3 && (
+                {motorFaults.rotorBar < 0.3 &&
+                  motorFaults.airGapEccentricity < 0.3 &&
+                  motorFaults.statorIssue < 0.3 && (
                     <li className="text-green-400">Motor operating within normal parameters.</li>
                   )}
               </ul>
             ) : (
               <ul className="text-xs text-gray-300 space-y-1 list-disc list-inside">
-                {faults.gearMesh > 0.6 && (
+                {gearboxFaults.gearMesh > 0.6 && (
                   <li>
                     Elevated gear mesh frequency amplitude. Inspect gear teeth for wear or damage.
                   </li>
                 )}
-                {faults.gearTooth > 0.5 && (
+                {gearboxFaults.gearTooth > 0.5 && (
                   <li>
                     Gear tooth fault indicators detected. Check for chipped, cracked, or worn gear
                     teeth.
                   </li>
                 )}
-                {faults.huntingTooth > 0.4 && (
+                {gearboxFaults.huntingTooth > 0.4 && (
                   <li>
                     Hunting tooth frequency present. Verify gear alignment and backlash settings.
                   </li>
                 )}
-                {faults.gearMesh < 0.4 &&
-                  faults.gearTooth < 0.3 &&
-                  faults.huntingTooth < 0.3 && (
+                {gearboxFaults.gearMesh < 0.4 &&
+                  gearboxFaults.gearTooth < 0.3 &&
+                  gearboxFaults.huntingTooth < 0.3 && (
                     <li className="text-green-400">Gearbox operating within normal parameters.</li>
                   )}
               </ul>
