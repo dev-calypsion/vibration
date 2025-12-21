@@ -31,7 +31,14 @@ export const setAuthToken = (token: string | null) => {
   }
 };
 
-const api = axios.create({ baseURL: API_URL });
+const api = axios.create({
+  baseURL: API_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true'
+  }
+});
 
 api.interceptors.request.use((config) => {
   const token = getStoredToken();
@@ -50,7 +57,10 @@ export const login = async (username: string, password: string) => {
   });
 
   const res = await axios.post(`${API_BASE_URL}/token`, payload, {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: { 
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'ngrok-skip-browser-warning': 'true'
+    },
   });
 
   if (!res.data?.access_token) {
