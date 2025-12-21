@@ -4,9 +4,10 @@ import axios from 'axios';
 // For dev, we assume localhost:8000 (API Gateway) is proxied or accessible.
 // Next.js runs on 3000, API on 8000.
 // We might need a proxy in next.config.js or CORS.
-// For now, we'll use localhost:8000 directly.
+// For now, we'll use relative path so it works both locally and on Vercel
+// (assuming Next.js rewrites are configured to proxy /api and /token)
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:3000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
 const API_URL = `${API_BASE_URL}/api`;
 export const TOKEN_STORAGE_KEY = 'vg.auth.token';
 
