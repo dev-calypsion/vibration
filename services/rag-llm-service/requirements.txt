@@ -1,7 +1,8 @@
-fastapi==0.104.0
-uvicorn==0.23.2
-pymilvus==2.3.2
-openai==1.3.0
+fastapi>=0.110.0
+uvicorn>=0.29.0
+pymilvus>=2.3.2
+openai>=1.12.0
 python-dotenv==1.0.0
-numpy==1.26.0
+numpy>=1.26.0
 marshmallow>=3.20,<4
+httpx>=0.27.0

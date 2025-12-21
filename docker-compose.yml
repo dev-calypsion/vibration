@@ -1,0 +1,152 @@
+version: '3.8'
+
+services:
+  # --- Infrastructure ---
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  postgres:
+    image: timescale/timescaledb:latest-pg15
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: vibrant_user
+      POSTGRES_PASSWORD: vibrant_password
+      POSTGRES_DB: vibrant_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+  mqtt-broker:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+
+  # --- Microservices ---
+  
+  ingestion-service:
+    build: ./services/ingestion-service
+    depends_on:
+      - kafka
+      - mqtt-broker
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      MQTT_BROKER_HOST: mqtt-broker
+      MQTT_BROKER_PORT: 1883
+      KAFKA_TOPIC_METRICS: metrics
+      KAFKA_TOPIC_RAW: raw-waveform
+
+  timeseries-service:
+    build: ./services/timeseries-service
+    ports:
+      - "8001:8000" # Expose on 8001 to avoid conflict
+    depends_on:
+      - kafka
+      - postgres
+      - minio
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: vibrant_user
+      DB_PASSWORD: vibrant_password
+      DB_NAME: vibrant_db
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET_WAVEFORMS: vibration-waveforms
+
+  ml-service:
+    build: ./services/ml-service
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_TOPIC_METRICS: metrics
+      KAFKA_TOPIC_INFERENCE: inference-results
+
+  alert-engine:
+    build: ./services/alert-engine
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_TOPIC_METRICS: metrics
+      KAFKA_TOPIC_INFERENCE: inference-results
+      DB_HOST: postgres
+      DB_USER: vibrant_user
+      DB_PASSWORD: vibrant_password
+      DB_NAME: vibrant_db
+
+  rag-llm-service:
+    build: ./services/rag-llm-service
+    ports:
+      - "8002:8000"
+    environment:
+      MILVUS_HOST: milvus # If using milvus, need to add it or mock it
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+
+  api-gateway:
+    build: ./services/api-gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - timeseries-service
+      - ml-service
+      - rag-llm-service
+    environment:
+      TIMESERIES_URL: http://timeseries-service:8000
+      ML_URL: http://ml-service:8000
+      RAG_URL: http://rag-llm-service:8000
+      API_SECRET_KEY: dev-secret-key
+      ALLOWED_ORIGINS: "*"
+
+  edge-simulator:
+    build: ./services/edge-simulator
+    depends_on:
+      - mqtt-broker
+      - api-gateway
+    environment:
+      MQTT_BROKER_HOST: mqtt-broker
+      MQTT_BROKER_PORT: 1883
+      INGESTION_MODE: mqtt
+      # Or http
+      # INGESTION_MODE: http
+      # API_GATEWAY_URL: http://api-gateway:8000
+
+volumes:
+  postgres_data:
+  minio_data:
