@@ -73,10 +73,15 @@ export const login = async (username: string, password: string) => {
 export const logout = () => setAuthToken(null);
 
 export const getMachines = async () => {
-    // Mock response if API not ready
+    // Mock response if API not ready or returns empty list (demo mode)
     try {
         const res = await api.get('/machines');
-        return Array.isArray(res.data) ? res.data : [];
+        if (Array.isArray(res.data) && res.data.length > 0) {
+            return res.data;
+        }
+        // If empty list (e.g. fresh DB), fallback to mock machines for demo
+        console.warn("API returned empty machine list, using mock data.");
+        return ["machine_01", "machine_02", "machine_03", "machine_04", "machine_05"];
     } catch (e) {
         console.error("API Error", e);
         return ["machine_01", "machine_02", "machine_03", "machine_04", "machine_05"];
