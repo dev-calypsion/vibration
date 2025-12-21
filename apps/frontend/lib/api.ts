@@ -75,7 +75,7 @@ export const getMachines = async () => {
 export const getMetrics = async (machineId: string) => {
     try {
         const res = await api.get(`/metrics/${machineId}`);
-        return res.data;
+        return Array.isArray(res.data) ? res.data : [];
     } catch (e) {
         console.error("API Error", e);
         return [];
@@ -85,7 +85,7 @@ export const getMetrics = async (machineId: string) => {
 export const getAlerts = async () => {
     try {
         const res = await api.get('/alerts');
-        return res.data;
+        return Array.isArray(res.data) ? res.data : [];
     } catch (e) {
         console.error("API Error", e);
         return [];

@@ -178,109 +178,113 @@ export default function MachineSpectrum({ faultScores }: MachineSpectrumProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Time + envelope */}
-        <div className="h-56">
+        <div className="h-56" style={{ minHeight: '220px' }}>
           <p className="text-xs text-gray-400 mb-1">
             Time-domain waveform with envelope (1 s window)
           </p>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={waveformChartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis
-                dataKey="tMs"
-                stroke="#9CA3AF"
-                tickFormatter={(v) => `${Math.round(v)} ms`}
-              />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#111827",
-                  borderColor: "#374151",
-                  color: "#F9FAFB",
-                }}
-                labelFormatter={(v) => `${Math.round(v)} ms`}
-              />
-              <Line
-                type="monotone"
-                dataKey="value"
-                stroke="#3B82F6"
-                strokeWidth={1.5}
-                dot={false}
-                isAnimationActive={false}
-              />
-              <Line
-                type="monotone"
-                dataKey="env"
-                stroke="#F59E0B"
-                strokeWidth={1.2}
-                dot={false}
-                isAnimationActive={false}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+          <div className="w-full h-full" style={{ minHeight: '200px' }}>
+            <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={waveformChartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis
+                    dataKey="tMs"
+                    stroke="#9CA3AF"
+                    tickFormatter={(v) => `${Math.round(v)} ms`}
+                />
+                <YAxis stroke="#9CA3AF" />
+                <Tooltip
+                    contentStyle={{
+                    backgroundColor: "#111827",
+                    borderColor: "#374151",
+                    color: "#F9FAFB",
+                    }}
+                    labelFormatter={(v) => `${Math.round(v)} ms`}
+                />
+                <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#60A5FA"
+                    dot={false}
+                    strokeWidth={1.5}
+                    name="Waveform"
+                />
+                <Line
+                    type="monotone"
+                    dataKey="env"
+                    stroke="#F59E0B"
+                    dot={false}
+                    strokeWidth={2}
+                    name="Envelope"
+                />
+                </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* FFT with markers */}
-        <div className="h-56">
+        <div className="h-56" style={{ minHeight: '220px' }}>
           <p className="text-xs text-gray-400 mb-1">
             Single-sided FFT with RPM harmonics and bearing bands
           </p>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={fftChartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis
-                dataKey="freq"
-                stroke="#9CA3AF"
-                tickFormatter={(v) => `${Math.round(v)} Hz`}
-              />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#111827",
-                  borderColor: "#374151",
-                  color: "#F9FAFB",
-                }}
-                labelFormatter={(v) => `${Math.round(v)} Hz`}
-              />
-              <Line
-                type="monotone"
-                dataKey="amp"
-                stroke="#10B981"
-                strokeWidth={1.5}
-                dot={false}
-                isAnimationActive={false}
-              />
-
-              {harmonics.map((f) => (
-                <ReferenceLine
-                  key={`h-${f}`}
-                  x={f}
-                  stroke="#3B82F6"
-                  strokeDasharray="3 3"
-                  label={{
-                    value: `${Math.round(f / 30)}x`,
-                    position: "top",
-                    fill: "#60A5FA",
-                    fontSize: 10,
-                  }}
+          <div className="w-full h-full" style={{ minHeight: '200px' }}>
+            <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={fftChartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis
+                    dataKey="freq"
+                    stroke="#9CA3AF"
+                    tickFormatter={(v) => `${Math.round(v)} Hz`}
                 />
-              ))}
-
-              {bearingBands.map((b) => (
-                <ReferenceLine
-                  key={b.label}
-                  x={b.freq}
-                  stroke="#F97316"
-                  strokeDasharray="4 2"
-                  label={{
-                    value: b.label,
-                    position: "top",
-                    fill: "#FDBA74",
-                    fontSize: 10,
-                  }}
+                <YAxis stroke="#9CA3AF" />
+                <Tooltip
+                    contentStyle={{
+                    backgroundColor: "#111827",
+                    borderColor: "#374151",
+                    color: "#F9FAFB",
+                    }}
+                    labelFormatter={(v) => `${Math.round(v)} Hz`}
                 />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
+                <Line
+                    type="monotone"
+                    dataKey="amp"
+                    stroke="#10B981"
+                    strokeWidth={1.5}
+                    dot={false}
+                    isAnimationActive={false}
+                />
+
+                {harmonics.map((f) => (
+                    <ReferenceLine
+                    key={`h-${f}`}
+                    x={f}
+                    stroke="#3B82F6"
+                    strokeDasharray="3 3"
+                    label={{
+                        value: `${Math.round(f / 30)}x`,
+                        position: "top",
+                        fill: "#60A5FA",
+                        fontSize: 10,
+                    }}
+                    />
+                ))}
+
+                {bearingBands.map((b) => (
+                    <ReferenceLine
+                    key={b.label}
+                    x={b.freq}
+                    stroke="#F97316"
+                    strokeDasharray="4 2"
+                    label={{
+                        value: b.label,
+                        position: "top",
+                        fill: "#FDBA74",
+                        fontSize: 10,
+                    }}
+                    />
+                ))}
+                </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
 

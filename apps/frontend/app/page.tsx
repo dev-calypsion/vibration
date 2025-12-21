@@ -46,7 +46,7 @@ export default function Dashboard() {
     let latest: any;
     let history: any[] = [];
 
-    if (metrics && metrics.length > 0) {
+    if (metrics && Array.isArray(metrics) && metrics.length > 0) {
       latest = metrics[0];
       history = metrics.slice(0, 20).reverse();
     } else {
