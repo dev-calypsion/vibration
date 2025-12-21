@@ -375,7 +375,7 @@ export default function MachineTypeDiagnosticsV2V2({
         <h4 className="text-sm font-semibold text-gray-200 mb-3">
           Frequency Spectrum with {isMotor ? "Motor" : "Gearbox"} Markers
         </h4>
-        <div className="h-64 bg-gray-900/30 rounded border border-gray-700 p-3">
+        <div className="h-64 bg-gray-900/30 rounded border border-gray-700 p-3" style={{ minHeight: '250px' }}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={spectrumData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />

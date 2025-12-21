@@ -66,7 +66,7 @@ export const getMachines = async () => {
     // Mock response if API not ready
     try {
         const res = await api.get('/machines');
-        return res.data;
+        return Array.isArray(res.data) ? res.data : [];
     } catch (e) {
         console.error("API Error", e);
         return ["machine_01", "machine_02", "machine_03", "machine_04", "machine_05"];

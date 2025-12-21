@@ -125,7 +125,7 @@ export default function FleetSummary({ machines, machineData }: FleetSummaryProp
         {/* Health Distribution Pie Chart */}
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
           <h3 className="text-sm font-semibold text-white mb-4">Fleet Health Distribution</h3>
-          <div className="h-48">
+          <div className="h-48" style={{ minHeight: '200px' }}>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -168,7 +168,7 @@ export default function FleetSummary({ machines, machineData }: FleetSummaryProp
         {/* Top Machines at Risk Bar Chart */}
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
           <h3 className="text-sm font-semibold text-white mb-4">Machines Requiring Attention</h3>
-          <div className="h-48">
+          <div className="h-48" style={{ minHeight: '200px' }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={topMachines.slice(0, 5)}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
