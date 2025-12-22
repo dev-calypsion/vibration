@@ -132,7 +132,8 @@ services:
       ML_URL: http://ml-service:8000
       RAG_URL: http://rag-llm-service:8000
       API_SECRET_KEY: dev-secret-key
-      ALLOWED_ORIGINS: "*"
+      ALLOWED_ORIGINS: "https://link360.in,https://www.link360.in,http://localhost:3000"
+      ALLOWED_ORIGIN_REGEX: "^https?://([a-z0-9-]+\\.)*ngrok-free\\.app$|^https?://(www\\.)?link360\\.in$|^http://localhost:3000$"
 
   edge-simulator:
     build: ./services/edge-simulator

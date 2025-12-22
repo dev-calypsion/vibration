@@ -20,20 +20,32 @@ RAG_URL = os.getenv("RAG_URL", "http://rag-llm-service:8000")
 
 app = FastAPI(title="Vibration Platform API Gateway")
 
+# CORS configuration: prefer regex for flexible domain patterns
 cors_origins = os.getenv("ALLOWED_ORIGINS", "")
+origin_regex = os.getenv("ALLOWED_ORIGIN_REGEX", "")
 allowed_origins = [
     origin.strip() for origin in cors_origins.split(",") if origin.strip()
 ] or [
-    "https://anne-answered-submit-humanities.trycloudflare.com"
+    "https://link360.in",
+    "https://www.link360.in",
 ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+if origin_regex:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origin_regex=origin_regex,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=allowed_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
