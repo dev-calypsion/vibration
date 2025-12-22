@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
           { key: "Access-Control-Allow-Credentials", value: "true" },
           { key: "Access-Control-Allow-Origin", value: "*" },
           { key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
-          { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
+          { key: "Access-Control-Allow-Headers", value: "Content-Type, Authorization, ngrok-skip-browser-warning" },
         ]
       }
     ]
@@ -23,11 +23,11 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/token',
-        destination: `${backendUrl}/token`, // Proxy Auth route (specific)
+        destination: `${backendUrl}/token`, 
       },
       {
         source: '/api/:path*',
-        destination: `${backendUrl}/api/:path*`, // Proxy other API routes
+        destination: `${backendUrl}/api/:path*`,
       },
     ];
   },
