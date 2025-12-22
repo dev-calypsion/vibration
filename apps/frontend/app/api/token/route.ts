@@ -13,31 +13,64 @@ export async function OPTIONS(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  // Debug: Log environment
   const backendUrl = (process.env.BACKEND_URL || 'http://localhost:8000').replace(/\/$/, '');
-  
-  try {
-    const body = await request.text(); // Get raw body
-    console.log(`Forwarding POST request to: ${backendUrl}/token`);
+  console.log(`[API/TOKEN] Processing login request. Backend: ${backendUrl}`);
 
-    // Forward the request to the actual backend
-    const response = await fetch(`${backendUrl}/token`, {
+  try {
+    const body = await request.text();
+    
+    // Attempt 1: POST to /token
+    let targetUrl = `${backendUrl}/token`;
+    console.log(`[API/TOKEN] Fetching: ${targetUrl}`);
+    
+    let response = await fetch(targetUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'ngrok-skip-browser-warning': 'true',
       },
       body: body,
+      redirect: 'manual', // Don't follow redirects automatically
     });
 
-    // Check if the response is JSON
+    console.log(`[API/TOKEN] Response 1: ${response.status}`);
+
+    // If we get a redirect (307/308) or 405, try adding a trailing slash
+    // FastAPI often redirects /token -> /token/ which turns POST into GET if followed automatically
+    if (response.status === 307 || response.status === 308 || response.status === 405) {
+       targetUrl = `${backendUrl}/token/`;
+       console.log(`[API/TOKEN] 405/Redirect detected. Retrying with trailing slash: ${targetUrl}`);
+       response = await fetch(targetUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'ngrok-skip-browser-warning': 'true',
+        },
+        body: body,
+      });
+      console.log(`[API/TOKEN] Response 2: ${response.status}`);
+    }
+
+    // Handle non-JSON responses
     const contentType = response.headers.get("content-type");
     let data;
-    if (contentType && contentType.indexOf("application/json") !== -1) {
+    if (contentType && contentType.includes("application/json")) {
       data = await response.json();
     } else {
       const text = await response.text();
-      console.error(`Backend returned non-JSON response: ${text.substring(0, 200)}...`);
-      data = { error: 'Backend returned non-JSON response', details: text.substring(0, 100) };
+      console.error(`[API/TOKEN] Non-JSON Response: ${text.substring(0, 100)}`);
+      // If 405 still persists, return useful debug info
+      if (response.status === 405) {
+         data = { 
+           error: 'Method Not Allowed (405)', 
+           debug_suggestion: 'Check backend URL and trailing slashes.',
+           target_attempted: targetUrl,
+           backend_response: text.substring(0, 200)
+         };
+      } else {
+         data = { error: 'Unexpected response format', details: text.substring(0, 100) };
+      }
     }
 
     return NextResponse.json(data, {
@@ -48,17 +81,16 @@ export async function POST(request: NextRequest) {
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, ngrok-skip-browser-warning',
       },
     });
+
   } catch (error: any) {
-    console.error('Error forwarding request:', error);
+    console.error('[API/TOKEN] Error:', error);
     return NextResponse.json({ 
-      error: 'Internal Server Error', 
-      details: error.message,
+      error: 'Internal Proxy Error', 
+      message: error.message,
       target: `${backendUrl}/token`
     }, { 
       status: 500,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      }
+      headers: { 'Access-Control-Allow-Origin': '*' }
     });
   }
 }
