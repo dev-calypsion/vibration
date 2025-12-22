@@ -7,9 +7,10 @@ import axios from 'axios';
 // For now, we'll use relative path so it works both locally and on Vercel
 // (assuming Next.js rewrites are configured to proxy /api and /token)
 
-// We use /vibrationmodule as the base path to match next.config.ts and the main app routing
+// We use the absolute Vercel URL to avoid 405 errors from the main app's proxy
+const VERCEL_URL = 'https://vibration-moniter.vercel.app';
 const BASE_PATH = '/vibrationmodule';
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || BASE_PATH;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || `${VERCEL_URL}${BASE_PATH}`;
 const API_URL = `${API_BASE_URL}/api`;
 export const TOKEN_STORAGE_KEY = 'vg.auth.token';
 
