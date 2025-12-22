@@ -8,12 +8,12 @@ const nextConfig: NextConfig = {
     
     return [
       {
-        source: '/api/:path*',
-        destination: `${backendUrl}/api/:path*`, // Proxy API routes
+        source: '/api/token',
+        destination: `${backendUrl}/token`, // Proxy Auth route (specific)
       },
       {
-        source: '/token',
-        destination: `${backendUrl}/token`, // Proxy Auth route
+        source: '/api/:path*',
+        destination: `${backendUrl}/api/:path*`, // Proxy other API routes
       },
     ];
   },

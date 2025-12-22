@@ -58,7 +58,7 @@ export const login = async (username: string, password: string) => {
     grant_type: 'password',
   });
 
-  const res = await axios.post(`${API_BASE_URL}/token`, payload, {
+  const res = await axios.post(`${API_URL}/token`, payload, {
     headers: { 
       'Content-Type': 'application/x-www-form-urlencoded',
       'ngrok-skip-browser-warning': 'true'
