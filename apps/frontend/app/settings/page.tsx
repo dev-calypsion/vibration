@@ -26,6 +26,13 @@ export default function SettingsPage() {
       return;
     }
     
+    // Warning for Vercel URLs
+    if (url.includes('vercel.app')) {
+       if (!confirm("Warning: You entered a 'vercel.app' URL. This usually points to the Frontend, not the Backend API. Are you sure?")) {
+          return;
+       }
+    }
+
     // Remove trailing slash
     url = url.replace(/\/$/, '');
     

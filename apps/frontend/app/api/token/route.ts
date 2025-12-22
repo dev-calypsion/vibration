@@ -70,7 +70,16 @@ export async function POST(request: NextRequest) {
       data = await response.json();
     } else {
       const text = await response.text();
-      console.error(`[API/TOKEN] Non-JSON Response: ${text.substring(0, 100)}`);
+      console.error(`[API/TOKEN] Non-JSON Response from ${targetUrl}: ${text.substring(0, 100)}`);
+      
+      // Analyze HTML to guess the error source
+      let suggestion = 'Check backend URL.';
+      if (text.includes('ngrok-skip-browser-warning')) {
+        suggestion = 'It looks like the Ngrok warning page. The skip header should be handling this, but try visiting the API URL in your browser once.';
+      } else if (text.includes('<!DOCTYPE html>') && (text.includes('next') || text.includes('vercel'))) {
+        suggestion = 'You seem to be connecting to a Next.js/Vercel app (Frontend) instead of the Backend API. Did you enter the Frontend URL in Settings?';
+      }
+
       // If 405 still persists, return useful debug info
       if (response.status === 405) {
          data = { 
@@ -80,7 +89,12 @@ export async function POST(request: NextRequest) {
            backend_response: text.substring(0, 200)
          };
       } else {
-         data = { error: 'Unexpected response format', details: text.substring(0, 100) };
+         data = { 
+           error: 'Unexpected response format', 
+           details: text.substring(0, 100),
+           suggestion: suggestion,
+           target_attempted: targetUrl
+         };
       }
     }
 
