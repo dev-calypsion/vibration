@@ -17,19 +17,10 @@ const nextConfig: NextConfig = {
     ]
   },
   async rewrites() {
-    const backendUrl = (process.env.BACKEND_URL || 'http://localhost:8000').trim().replace(/\/$/, '');
-    console.log('Rewrites using backend URL:', backendUrl);
-    
-    return [
-      // {
-      //   source: '/api/token',
-      //   destination: `${backendUrl}/token`, 
-      // },
-      {
-        source: '/api/:path*',
-        destination: `${backendUrl}/api/:path*`,
-      },
-    ];
+    // We are now using a manual API Route Proxy (app/api/[...path]/route.ts)
+    // to allow for dynamic BACKEND_URL configuration via cookies.
+    // This removes the need for static rewrites here.
+    return [];
   },
 };
 

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getBackendUrl } from '@/lib/backend-config';
 
 export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, {
@@ -14,7 +15,7 @@ export async function OPTIONS(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   // Debug: Log environment
-  const backendUrl = (process.env.BACKEND_URL || 'http://localhost:8000').trim().replace(/\/$/, '');
+  const backendUrl = getBackendUrl(request);
   console.log(`[API/TOKEN] Processing login request. Backend: ${backendUrl}`);
 
   // Validation: Check for obviously incorrect backend URLs
