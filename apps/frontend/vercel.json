@@ -3,11 +3,10 @@
   "buildCommand": "next build",
   "installCommand": "npm install",
   "outputDirectory": ".next",
-  "redirects": [
+  "rewrites": [
     {
-      "source": "/",
-      "destination": "/vibrationmodule",
-      "permanent": true
+      "source": "/((?!vibrationmodule).*)",
+      "destination": "/vibrationmodule/$1"
     }
   ]
 }
