@@ -21,10 +21,10 @@ const nextConfig: NextConfig = {
     console.log('Rewrites using backend URL:', backendUrl);
     
     return [
-      {
-        source: '/api/token',
-        destination: `${backendUrl}/token`, 
-      },
+      // {
+      //   source: '/api/token',
+      //   destination: `${backendUrl}/token`, 
+      // },
       {
         source: '/api/:path*',
         destination: `${backendUrl}/api/:path*`,
