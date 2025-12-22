@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   basePath: '/vibrationmodule',
-  trailingSlash: true, // Force trailing slashes to avoid 308 redirects that might become 405s
+  // trailingSlash: true, // Removed to prevent 308 redirects on API calls which block CORS preflights
   async headers() {
     return [
       {
