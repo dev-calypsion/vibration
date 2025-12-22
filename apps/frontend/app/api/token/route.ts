@@ -13,10 +13,12 @@ export async function OPTIONS(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const backendUrl = (process.env.BACKEND_URL || 'http://localhost:8000').replace(/\/$/, '');
+  
   try {
     const body = await request.text(); // Get raw body
-    const backendUrl = (process.env.BACKEND_URL || 'http://localhost:8000').replace(/\/$/, '');
-    
+    console.log(`Forwarding POST request to: ${backendUrl}/token`);
+
     // Forward the request to the actual backend
     const response = await fetch(`${backendUrl}/token`, {
       method: 'POST',
@@ -27,7 +29,16 @@ export async function POST(request: NextRequest) {
       body: body,
     });
 
-    const data = await response.json();
+    // Check if the response is JSON
+    const contentType = response.headers.get("content-type");
+    let data;
+    if (contentType && contentType.indexOf("application/json") !== -1) {
+      data = await response.json();
+    } else {
+      const text = await response.text();
+      console.error(`Backend returned non-JSON response: ${text.substring(0, 200)}...`);
+      data = { error: 'Backend returned non-JSON response', details: text.substring(0, 100) };
+    }
 
     return NextResponse.json(data, {
       status: response.status,
@@ -37,8 +48,17 @@ export async function POST(request: NextRequest) {
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, ngrok-skip-browser-warning',
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error forwarding request:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Internal Server Error', 
+      details: error.message,
+      target: `${backendUrl}/token`
+    }, { 
+      status: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      }
+    });
   }
 }
