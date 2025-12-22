@@ -6,6 +6,7 @@ import Layout from '@/components/Layout';
 import VibrationChart from '@/components/VibrationChart';
 import MachineSpectrum from '@/components/MachineSpectrum';
 import MachineTypeDiagnostics from '@/components/MachineTypeDiagnostics';
+import CameraFeed from '@/components/CameraFeed';
 import { getMetrics, queryRAG } from '@/lib/api';
 import { Bot, Send } from 'lucide-react';
 
@@ -276,6 +277,9 @@ export default function MachineDetail() {
                     </div>
                 )}
 
+
+                {/* Camera Feed */}
+                <CameraFeed machineId={id} />
 
                 {/* Charts */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

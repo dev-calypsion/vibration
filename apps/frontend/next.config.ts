@@ -22,6 +22,16 @@ const nextConfig: NextConfig = {
     // This removes the need for static rewrites here.
     return [];
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/vibrationmodule',
+        permanent: false,
+        basePath: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
