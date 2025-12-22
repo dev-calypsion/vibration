@@ -14,8 +14,18 @@ export async function OPTIONS(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   // Debug: Log environment
-  const backendUrl = (process.env.BACKEND_URL || 'http://localhost:8000').replace(/\/$/, '');
+  const backendUrl = (process.env.BACKEND_URL || 'http://localhost:8000').trim().replace(/\/$/, '');
   console.log(`[API/TOKEN] Processing login request. Backend: ${backendUrl}`);
+
+  // Validation: Check for obviously incorrect backend URLs
+  if (backendUrl.includes('ngrok.com/r/')) {
+     return NextResponse.json({
+        error: 'Configuration Error',
+        message: 'The BACKEND_URL environment variable is set to a generic ngrok link, not your actual tunnel URL.',
+        suggestion: 'Please update BACKEND_URL to your actual ngrok forwarding URL (e.g., https://<id>.ngrok-free.app).',
+        current_value: backendUrl
+     }, { status: 500 });
+  }
 
   try {
     const body = await request.text();

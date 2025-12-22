@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
     ]
   },
   async rewrites() {
-    const backendUrl = (process.env.BACKEND_URL || 'http://localhost:8000').replace(/\/$/, '');
+    const backendUrl = (process.env.BACKEND_URL || 'http://localhost:8000').trim().replace(/\/$/, '');
     console.log('Rewrites using backend URL:', backendUrl);
     
     return [
