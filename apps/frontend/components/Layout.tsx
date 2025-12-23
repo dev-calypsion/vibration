@@ -53,14 +53,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         <Activity className="w-5 h-5 mr-3" />
                         Simulator
                     </Link>
-                    <Link 
-                        href="/settings" 
-                        className={`flex items-center px-6 py-3 hover:bg-gray-700 hover:text-white transition-colors ${pathname === '/settings' ? 'bg-gray-700/50 text-blue-400' : 'text-gray-300'}`}
-                        onClick={() => setIsSidebarOpen(false)}
-                    >
-                        <Settings className="w-5 h-5 mr-3" />
-                        Settings
-                    </Link>
                 </nav>
             </aside>
 

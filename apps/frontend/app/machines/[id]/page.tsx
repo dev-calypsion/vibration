@@ -217,60 +217,62 @@ export default function MachineDetail() {
 
                 {/* Summary metrics */}
                 {insights && (
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-                            <p className="text-xs uppercase tracking-wide text-gray-400">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                        <div className="bg-gray-800 rounded-lg border border-gray-700 p-3 md:p-4">
+                            <p className="text-[10px] md:text-xs uppercase tracking-wide text-gray-400">
                                 Health Index
                             </p>
-                            <p className="mt-2 text-2xl font-mono text-white">
+                            <p className="mt-1 md:mt-2 text-lg md:text-2xl font-mono text-white">
                                 {insights.healthScore.toFixed(0)}%
                             </p>
-                            <p className="mt-1 text-xs text-gray-500">
+                            <p className="mt-1 text-[10px] md:text-xs text-gray-500 leading-tight">
                                 Overall mechanical condition score.
                             </p>
                         </div>
-                        <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-                            <p className="text-xs uppercase tracking-wide text-gray-400">
+                        <div className="bg-gray-800 rounded-lg border border-gray-700 p-3 md:p-4">
+                            <p className="text-[10px] md:text-xs uppercase tracking-wide text-gray-400">
                                 Remaining Useful Life
                             </p>
-                            <p className="mt-2 text-2xl font-mono text-white">
+                            <p className="mt-1 md:mt-2 text-lg md:text-2xl font-mono text-white">
                                 {insights.rulHours.toFixed(0)}h
                             </p>
-                            <p className="mt-1 text-xs text-gray-500">
+                            <p className="mt-1 text-[10px] md:text-xs text-gray-500 leading-tight">
                                 Estimated time before maintenance is required.
                             </p>
                         </div>
-                        <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-                            <p className="text-xs uppercase tracking-wide text-gray-400">
+                        <div className="bg-gray-800 rounded-lg border border-gray-700 p-3 md:p-4">
+                            <p className="text-[10px] md:text-xs uppercase tracking-wide text-gray-400">
                                 Latest Metrics
                             </p>
-                            <p className="mt-2 text-sm text-gray-300">
-                                RMS{" "}
-                                <span className="font-mono text-white">
-                                    {insights.lastRms.toFixed(3)}
-                                </span>
-                            </p>
-                            <p className="text-sm text-gray-300">
-                                Peak{" "}
-                                <span className="font-mono text-white">
-                                    {insights.lastPeak.toFixed(3)}
-                                </span>
-                            </p>
-                            <p className="text-sm text-gray-300">
-                                Crest{" "}
-                                <span className="font-mono text-white">
-                                    {insights.lastCrest.toFixed(3)}
-                                </span>
-                            </p>
+                            <div className="mt-2 space-y-1">
+                                <p className="text-xs md:text-sm text-gray-300 flex justify-between">
+                                    <span>RMS</span>
+                                    <span className="font-mono text-white ml-1">
+                                        {insights.lastRms.toFixed(3)}
+                                    </span>
+                                </p>
+                                <p className="text-xs md:text-sm text-gray-300 flex justify-between">
+                                    <span>Peak</span>
+                                    <span className="font-mono text-white ml-1">
+                                        {insights.lastPeak.toFixed(3)}
+                                    </span>
+                                </p>
+                                <p className="text-xs md:text-sm text-gray-300 flex justify-between">
+                                    <span>Crest</span>
+                                    <span className="font-mono text-white ml-1">
+                                        {insights.lastCrest.toFixed(3)}
+                                    </span>
+                                </p>
+                            </div>
                         </div>
-                        <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-                            <p className="text-xs uppercase tracking-wide text-gray-400">
+                        <div className="bg-gray-800 rounded-lg border border-gray-700 p-3 md:p-4">
+                            <p className="text-[10px] md:text-xs uppercase tracking-wide text-gray-400">
                                 Severity
                             </p>
-                            <p className="mt-2 text-xl font-semibold text-white">
+                            <p className="mt-1 md:mt-2 text-lg md:text-xl font-semibold text-white">
                                 {insights.severity}
                             </p>
-                            <p className="mt-1 text-xs text-gray-500">
+                            <p className="mt-1 text-[10px] md:text-xs text-gray-500 leading-tight">
                                 Based on current vibration level and crest factor.
                             </p>
                         </div>
