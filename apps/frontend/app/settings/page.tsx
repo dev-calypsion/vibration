@@ -7,7 +7,6 @@ export default function SettingsPage() {
   const [backendUrl, setBackendUrl] = useState('');
   const [status, setStatus] = useState('');
   const router = useRouter();
-  return null;
 
   useEffect(() => {
     // Read existing cookie
@@ -59,7 +58,7 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-slate-900 p-8 rounded-xl border border-slate-800 shadow-2xl">
-        <h1 className="text-2xl font-bold mb-6 text-blue-400">Developer Settings</h1>
+        <h1 className="text-2xl font-bold mb-6 text-blue-400">Settings</h1>
         
         <div className="mb-6 p-4 bg-blue-900/20 border border-blue-800/50 rounded-lg text-sm text-blue-200">
           <p className="mb-2"><strong>Dynamic Backend URL</strong></p>
