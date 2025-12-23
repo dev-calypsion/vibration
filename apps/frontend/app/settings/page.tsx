@@ -7,6 +7,7 @@ export default function SettingsPage() {
   const [backendUrl, setBackendUrl] = useState('');
   const [status, setStatus] = useState('');
   const router = useRouter();
+  return null;
 
   useEffect(() => {
     // Read existing cookie

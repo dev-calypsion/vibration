@@ -184,17 +184,17 @@ export default function MachineDetail() {
     return (
         <Layout>
             <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                    <div>
-                        <h1 className="text-2xl font-bold text-white">Machine: {id}</h1>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+                    <div className="min-w-0">
+                        <h1 className="text-lg md:text-2xl font-bold text-white truncate">Machine: {id}</h1>
                         {insights && (
-                            <p className="text-xs text-gray-400 mt-1">
+                            <p className="text-[11px] md:text-xs text-gray-400 mt-0.5">
                                 Live condition monitoring · Trend {insights.trendDirection} ·
                                 Health {insights.healthScore.toFixed(0)}%
                             </p>
                         )}
                     </div>
-                    <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm border border-green-500/50">
+                    <span className="self-start md:self-auto px-2 md:px-3 py-0.5 md:py-1 bg-green-500/20 text-green-400 rounded-full text-xs md:text-sm border border-green-500/50">
                         Monitoring Active
                     </span>
                 </div>
