@@ -29,17 +29,17 @@ export default function Dashboard() {
   const [machineData, setMachineData] = useState<Record<string, MachineOverview>>({});
   const [alerts, setAlerts] = useState<any[]>([]);
   const router = useRouter();
-  const [isAuthed, setIsAuthed] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(true); // Default to true for now
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
-    if (!token) {
-      router.replace("/login");
-      return;
-    }
-    setIsAuthed(true);
-  }, [router]);
+  // useEffect(() => {
+  //   if (typeof window === "undefined") return;
+  //   const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+  //   if (!token) {
+  //     router.replace("/login");
+  //     return;
+  //   }
+  //   setIsAuthed(true);
+  // }, [router]);
 
 
   const buildOverview = (id: string, metrics: any[]): MachineOverview => {
